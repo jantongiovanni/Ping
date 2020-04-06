@@ -1,4 +1,4 @@
-import firebase from 'firebase'; // 4.8.1
+import firebase from 'firebase';
 import 'firebase/firestore';
 
 import {
@@ -44,14 +44,20 @@ class Fire {
           console.log(result);
           if(result.additionalUserInfo.isNewUser){
             console.log("NEW USER");
-            firebase.firestore().collection('users').doc(result.user.uid);
+            firebase.firestore().collection('users').doc(result.user.uid).set({
+              createdAt: Date.now()
+            }).then(function(){
+              console.log("User successfullly written to firestore");
+            }).catch(function(error) {
+              console.log("Error writing doc to firestore: ", error);
+            });
           }
         });
       } catch ({ message }) {
         alert(message);
       }
     } else {
-      console.log("a user is signed in already")
+      console.log("user is signed in")
     }
   };
 }
