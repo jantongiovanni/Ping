@@ -7,6 +7,7 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
+import Fire from '../data/Fire'
 
 function Feed({ navigation }) {
   return (
