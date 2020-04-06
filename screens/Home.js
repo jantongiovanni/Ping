@@ -1,8 +1,11 @@
 import React from 'react';
-import { Text, View, Button, Vibration, Platform } from 'react-native';
+import { Text, View, Button, Vibration, Platform, StyleSheet, Dimensions} from 'react-native';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
+import AwesomeButton from "react-native-really-awesome-button";
+
+const { width: screenWidth } = Dimensions.get('window')
 
 export default class Home extends React.Component {
   state = {
@@ -89,11 +92,18 @@ export default class Home extends React.Component {
           <Text>Origin: {this.state.notification.origin}</Text>
           <Text>Data: {JSON.stringify(this.state.notification.data)}</Text>
         </View>
-        <Button title={'Press to Send Notification'} onPress={() => this.sendPushNotification()} />
+        <AwesomeButton height={screenWidth-160} width={screenWidth-100} style={styles.button} onPress={() => this.sendPushNotification()}> Send Notification </AwesomeButton>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    marginTop: 8,
+    marginBottom: 8
+  },
+});
 
 /*  TO GET PUSH RECEIPTS, RUN THE FOLLOWING COMMAND IN TERMINAL, WITH THE RECEIPTID SHOWN IN THE CONSOLE LOGS
 
