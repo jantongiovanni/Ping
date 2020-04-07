@@ -7,7 +7,8 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import Fire from '../data/Fire'
+import Fire from '../data/Fire';
+import Auth from '../data/Auth';
 import Home from '../screens/Home'
 import Manage from '../screens/Manage'
 
