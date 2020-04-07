@@ -9,6 +9,8 @@ import {
 } from '@react-navigation/drawer';
 import Fire from '../data/Fire'
 import Home from '../screens/Home'
+import Manage from '../screens/Manage'
+
 
 function Feed({ navigation }) {
   return (
@@ -45,6 +47,7 @@ function MyDrawer() {
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name="Home" component={Home}/>
+      <Drawer.Screen name="Manage" component={Manage}/>
       <Drawer.Screen name="Feed" component={Feed} />
       <Drawer.Screen name="Notifications" component={Notifications} />
     </Drawer.Navigator>
