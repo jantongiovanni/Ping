@@ -5,7 +5,6 @@ import React from 'react';
 
 class Auth {
   constructor() {
-    console.log("observe auth const");
     this.observeAuth();
   }
 
@@ -33,11 +32,10 @@ class Auth {
         alert(message);
       }
     } else {
-      console.log("user is signed in")
+      console.log("Auth: user is signed in")
     }
   };
 }
 
-console.log("Auth");
 Auth.shared = new Auth();
 export default Auth;

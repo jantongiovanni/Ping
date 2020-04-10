@@ -144,11 +144,12 @@ export default function App({navigation}) {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
-
       try {
         userToken = await AsyncStorage.getItem('userToken');
+        console.log("userToken: ", userToken);
       } catch (e) {
         // Restoring token failed
+        console.log("Restoring token failed: ", e)
       }
 
       // After restoring token, we may need to validate it in production apps
@@ -164,20 +165,31 @@ export default function App({navigation}) {
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
+        console.log("sign in authcontext");
         // In a production app, we need to send some data (usually username, password) to server and get a token
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
+        await AsyncStorage.setItem('userToken', 'test token');
 
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
+        dispatch({ type: 'SIGN_IN', token: 'dispatch token' });
       },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+      signOut: async () => {
+        console.log("sign out authcontext");
+        try {
+          await AsyncStorage.setItem('userToken', '');
+          console.log("set");
+        } catch (error) {
+          console.log("error setting tign out: ", error);
+        }
+
+          dispatch({ type: 'SIGN_OUT'})
+      },
       signUp: async data => {
         // In a production app, we need to send user data to server and get a token
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `AsyncStorage`
         // In the example, we'll use a dummy token
-
         dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
       },
     }),
@@ -185,9 +197,6 @@ export default function App({navigation}) {
   );
 
   return (
-    // <NavigationContainer>
-    //   <MyDrawer />
-    // </NavigationContainer>
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <Stack.Navigator>
