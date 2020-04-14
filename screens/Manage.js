@@ -122,7 +122,7 @@ render() {
       <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection:'row', marginTop: 30}}>
         <TextInput
           style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={text => onChangeText(text)}
+          onChangeText={text => this.handleFriendInputChange(text)}
           value={this.state.friendInput}
         />
         <AwesomeButton height={40} width={100} style={styles.button} onPress={() => this.addFriend()}> Add Friend </AwesomeButton>
