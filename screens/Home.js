@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Button, Vibration, Platform, StyleSheet, Dimensions} from 'react-native';
+import { AsyncStorage, Text, View, Button, Vibration, Platform, StyleSheet, Dimensions} from 'react-native';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
@@ -27,6 +27,12 @@ export default class Home extends React.Component {
       }
       token = await Notifications.getExpoPushTokenAsync();
       console.log(token);
+      try {
+        await AsyncStorage.setItem('pushToken', token);
+      } catch (error) {
+        // Error retrieving data
+        console.log(error.message);
+      }
       this.setState({ expoPushToken: token });
     } else {
       alert('Must use physical device for Push Notifications');

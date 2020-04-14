@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { FlatList, TextInput, Text, View, StyleSheet, Dimensions} from 'react-native';
+import {AsyncStorage, FlatList, TextInput, Text, View, StyleSheet, Dimensions} from 'react-native';
 import AwesomeButton from "react-native-really-awesome-button";
 import {app, db} from '../data/Fire';
 import firebase from 'firebase';
@@ -13,6 +13,7 @@ export default class Manage extends Component {
 
     this.state = {
       friendInput : 'A_TEST_ID',
+      userToken: '',
       isDataFetched: false,
       itemArr: [],
       user: ''
@@ -24,6 +25,7 @@ export default class Manage extends Component {
       // Cloud Firestore: Initial Query
       console.log("Mount");
       this.retrieveData();
+      console.log(this.getUserToken());
     }
     catch (error) {
       console.log("Mount Error: ", error);
@@ -74,32 +76,47 @@ export default class Manage extends Component {
     </View>
   );
 
+  getUserToken = async () => {
+    let userToken = '';
+    try {
+      userToken = await AsyncStorage.getItem('pushToken') || 'none';
+      console.log("Async push token: ", userToken);
+      this.state.userToken = userToken;
+    } catch (error) {
+      // Error retrieving data
+      console.log(error.message);
+    }
+  }
+
   addFriend = () => {
       var curr = this.state.user//firebase.auth().currentUser.uid;
       var friend = this.state.friendInput;
+      //const budgets = arrayOfBudget.map((obj)=> {return Object.assign({}, obj)});
       console.log("addFriend: ", friend)
       console.log("current user: ", curr)
       if(friend < curr){
         console.log(friend + curr);
         db.collection('users').doc(curr).collection('rooms').doc(friend + curr).set({
+          currentUserToken: this.state.userToken,
           room: friend + curr,
           sent: 0,
           received: 0
         })
         .then(function(){
-          console.log("User successfullly written to firestore");
+          console.log("Friend successfullly written to firestore");
         }).catch(function(error) {
           console.log("Error writing doc to firestore: ", error);
         });
       } else {
         console.log(curr + friend);
         db.collection('users').doc(curr).collection('rooms').doc(curr + friend).set({
+          currentUserToken: this.state.userToken,
           room: curr + friend,
           sent: 0,
           received: 0
         })
         .then(function(){
-          console.log("User successfullly written to firestore");
+          console.log("Friend successfullly written to firestore");
         }).catch(function(error) {
           console.log("Error writing doc to firestore: ", error);
         });
